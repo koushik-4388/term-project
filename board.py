@@ -1,7 +1,7 @@
 import copy
 
 class Board:
-    def __init__(self, board):
+    def __init__(self,board):
         self.board = copy.deepcopy(board)
 
     def __str__(self):
@@ -10,15 +10,15 @@ class Board:
     def __repr__(self):
         return f'Board({self.board.__repr__()})'
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self,memo):
         return Board(self.board)
 
     @staticmethod
     def new():
-        return Board([[0, 0, 0, 0] for _ in range(4)])
+        return Board([[0,0,0,0,0] for i in range(5)])
 
-    def select(self, row, col, value):
-        self.board[row][col] = value
+    def select(self,row,col,val):
+        self.board[row][col] = val
 
     def check(self, row, col):
         return self.board[row][col]

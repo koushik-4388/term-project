@@ -7,7 +7,10 @@ Run the game with `python3 play.py`. If this fails you might need to install `py
 For debugging, you can open a module in the interpreter with the following command `python3 -i state.py`. Following this you can type commands related to state into the interpreter and see their result.
 
 ### Making your own game
-1. Fork the repo
-2. Make your own game
+When you run the command `pyhton3 play.py` you get a 5 X 5 board with 25 buttons in which there are 4 mines hidden inside the board.
+The goal here is to select all the safe buttons avoiding the mines.
+If you select a button which has a hidden mine you "LOSE" if you are lucky enough to select all the safe buttons you "WIN".
 
-The code has been designed to be modular and will suit the needs of most 2D, perfect information, turn-based strategy board games.
+GOOD LUCK ! ENJOY YOURSELF PLAYING THIS GAME !
+
+ALL RIGHTS RESEVED  ("JUST KIDDING")

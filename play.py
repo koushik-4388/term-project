@@ -1,48 +1,44 @@
-from tkinter import Tk, Label, Button, PhotoImage, messagebox, TOP, Frame
+from tkinter import Tk, Label, Button, PhotoImage, messagebox, TOP, Frame,Label
 
-from state import State, ColumnFullException, WrongTurnException
+
+from state import state
+
+
 
 def render_board(game, frame, imgs):
     pick_img = {
         0: imgs[2],
-        State.HUMAN: imgs[1],
-        State.COMPUTER: imgs[0]
+        state.HUMAN: imgs[1],
+        state.BOMB: imgs[0]
     }
 
-    for i in range(4):
-        for j in range(4):
-            Button(frame, command = lambda col=j: human_move(game, frame, imgs, col), image=pick_img[game.board.check(i, j)]).grid(row=i, column=j)    
+    for i in range(5):
+        for j in range(5):
+            Button(frame, command = lambda col = j, row = i: human_move(game, frame, imgs, row, col), image=pick_img[game.gameboard.check(i, j)]).grid(row=i, column=j)
 
-def ai_move(game, frame, imgs):
-    try:
-        game.ai_choice()
-    except WrongTurnException as e:
-        messagebox.showwarning('Warning', 'Let the human play')
-
-    render_board(game, frame, imgs)
-
-    if game.win():
-        messagebox.showinfo('GG', 'Computer wins')
-
-def human_move(game, frame, imgs, col):
-    try:
-        game.human_choice(col)
-    except ColumnFullException as e:
-        messagebox.showwarning('Warning', 'Can\'t choose this column')
-    except WrongTurnException as e:
-        messagebox.showwarning('Warning', 'Let the computer play')
-
-    render_board(game, frame, imgs)
-
-    if game.win():
-        messagebox.showinfo('GG', 'Human wins')
+def human_move(game, frame, imgs,row, col):
+     render_board(game, frame, imgs)
+     try:
+         game.human_choice(row,col)
+         render_board(game, frame, imgs)
+     except:
+         if game.bombcheck(row,col):
+             game.gameboard.select(row,col,4)
+             render_board(game, frame, imgs)
+             messagebox.showinfo("GAME OVER","You stepped on a mine\n BETTER LUCK NEXT TIME!!!!!!")
+             quit()
+         if game.win():
+             messagebox.showinfo("YOU WON THE GAME!!!!!!","WINNER WINNER CHICKEN DINNER")
+             quit()
 
 if __name__ == "__main__":
-    game = State.new()
+    game = state.new()
 
     # create tkinter window
     win = Tk()
-    win.title("PPAF - Align 3 game")
+    text = Label(win,text = "about the game:\tcarefully avoid the mines by not tapping them\n\t\t if you do ka-boooooommm!!!!!!!!")
+    text.pack()
+    win.title("PPAF - MINESWEEPER--- watch your step")
     imgs = [PhotoImage(file = f) for f in ['green_blob.png', 'blue_blob.png', 'white_blob.png', 'base_line.png']]
 
     # align frames
@@ -51,9 +47,7 @@ if __name__ == "__main__":
     bottom_frame = Frame(win)
     bottom_frame.pack(side=TOP)
 
-    # add buttons
-    b0 = Button(top_frame,text="Minimax Move", command = lambda: ai_move(game, bottom_frame, imgs), bg="orange", fg="red")
-    b0.pack(side=TOP)
+
     bbase = Label(top_frame, image=imgs[3])
     bbase.pack(side=TOP)
 
